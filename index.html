@@ -33,6 +33,8 @@ h2 { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; }
   transition: background 0.2s, transform 0.1s;
   display: inline-block;
   margin: 5px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .btn:hover { background: #33ddff; }
 .btn:active { transform: scale(0.97); }
@@ -104,13 +106,17 @@ h2 { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; }
   transition: border-color 0.3s, background 0.3s;
   z-index: 10;
   animation: pulse 2s infinite;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
 }
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.5); }
   50% { box-shadow: 0 0 0 12px rgba(0, 212, 255, 0); }
 }
 .marker:hover { border-color: #33ddff; background: rgba(10, 14, 26, 0.75); }
-.marker svg { width: 24px; height: 24px; stroke: #00d4ff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.marker svg { width: 24px; height: 24px; stroke: #00d4ff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
 .marker.solved { border-color: #00ff88; animation: none; cursor: default; }
 .marker.solved svg { stroke: #00ff88; }
 .marker.solved:hover { background: rgba(10, 14, 26, 0.55); }
@@ -170,6 +176,8 @@ h2 { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; }
   font-size: 0.95rem;
   text-align: left;
   transition: background 0.2s, border-color 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .modal-option:hover { background: #2a3a5a; border-color: #00d4ff; }
 .modal-option.selected { background: #00d4ff22; border-color: #00d4ff; }
@@ -183,6 +191,7 @@ h2 { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; }
   font-size: 1rem;
   margin-bottom: 18px;
   outline: none;
+  touch-action: manipulation;
 }
 .modal-input:focus { border-color: #00d4ff; }
 .modal-feedback {
@@ -204,6 +213,8 @@ h2 { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; }
   font-size: 0.9rem;
   padding: 4px 0;
   text-decoration: underline;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .hint-btn:disabled { color: #556677; cursor: default; text-decoration: none; }
 .hint-text-content { color: #aabbcc; font-size: 0.9rem; margin-top: 6px; display: none; }
@@ -294,7 +305,7 @@ h2 { color: #00d4ff; font-size: 1.3rem; margin-bottom: 15px; }
     <h3 id="taskTitle">Задание</h3>
     <div class="modal-task" id="taskText"></div>
     <div class="modal-options" id="taskOptions"></div>
-    <input type="text" inputmode="decimal" class="modal-input" id="taskInput" placeholder="Введите ответ" style="display:none;">
+    <input type="text" class="modal-input" id="taskInput" placeholder="Введите ответ" style="display:none;">
     <div class="modal-hints">
       <button class="hint-btn" id="hintBtn1" onclick="showHint(1)">Подсказка 1</button>
       <div class="hint-text-content" id="hintText1"></div>
@@ -463,7 +474,6 @@ function renderMarkers() {
     div.innerHTML = '<div class="marker-tooltip">' + m.name + '</div>' +
       (state.solved[m.id] ? ICONS.check : ICONS[m.icon]);
     div.onclick = () => openTask(m.id);
-    if ('ontouchstart' in window) div.ontouchstart = (e) => { e.preventDefault(); div.classList.toggle('show-tooltip'); };
     container.appendChild(div);
   });
   const doorDiv = document.createElement('div');
@@ -474,7 +484,6 @@ function renderMarkers() {
   doorDiv.innerHTML = '<div class="marker-tooltip">Дверь-шлюз</div>' +
     (allSolved ? ICONS.lockOpen : ICONS.lock);
   doorDiv.onclick = () => tryOpenDoor();
-  if ('ontouchstart' in window) doorDiv.ontouchstart = (e) => { e.preventDefault(); doorDiv.classList.toggle('show-tooltip'); };
   container.appendChild(doorDiv);
 }
 
